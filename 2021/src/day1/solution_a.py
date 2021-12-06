@@ -1,5 +1,3 @@
-import csv
-
 def read_in_chunks(file_object, chunk_size=1024):
     """Lazy function (generator) to read a file piece by piece.
     Default chunk size: 1k."""
@@ -9,8 +7,9 @@ def read_in_chunks(file_object, chunk_size=1024):
             break
         yield data[0]
 
+
 def get_depth_counter():
-    with open('input.txt') as f:
+    with open('../../resources/day1_input_a.txt') as f:
         counter = -1
         currentValue = 0
         for value in read_in_chunks(f):
