@@ -64,6 +64,7 @@ def play_bingo():
     tables = input_to_tables(lines)
     for table in tables:
         winner_table, plays, winner_number = play_until_win(numbers, table)
+        # Change with -inf and < to first part
         if plays > min_plays:
             best_table = winner_table
             min_plays = plays
