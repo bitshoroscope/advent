@@ -1,10 +1,11 @@
-min_x = 0
-min_y = 0
+min_x = float('inf')
+min_y = float('inf')
 max_x = float('-inf')
 max_y = float('-inf')
 
 
 def get_vent():
+  overlaps = 0
   with open('../../resources/day5_input.txt') as f:
     lines = f.readlines()
     points = get_points(lines)
@@ -13,8 +14,11 @@ def get_vent():
       vents = transform_to_sequence(row)
       for vent in vents:
         initial_matrix[vent[0]][vent[1]] += 1
+        if initial_matrix[vent[0]][vent[1]] > 1:
+          overlaps += 1
     print_matrix(initial_matrix)
-    return points
+    print(f'min_x:{min_x}, min_y:{min_y}, max_x:{max_x}, max_y:{max_y}')
+    return overlaps
 
 
 def print_matrix(matrix):
@@ -38,6 +42,17 @@ def set_max_pos(point):
   if max_y > max_x:
     max_x = max_y
 
+def set_min_pos(point):
+  global min_x, min_y
+  if point[0] < min_x:
+    min_x = point[0]
+  if point[1] < min_y:
+    min_y = point[1]
+  if min_x < min_y:
+    min_y = min_x
+  if min_y < min_x:
+    min_x = min_y
+
 
 def get_points(lines):
   pairs = [line.strip() for line in lines]
@@ -50,6 +65,7 @@ def get_points(lines):
     positions.append(starting)
     positions.append(ending)
     set_max_pos(ending)
+    set_min_pos(starting)
     points.append(positions)
   return points
 
@@ -68,13 +84,14 @@ def transform_to_sequence(input):
   if y_ending < y_start:
     y_ending, y_start = y_start,y_ending
 
-
+  #vertical line
   if x_start == x_ending:
     for i in range(y_start, y_ending + 1):
       element = []
       element.append(x_start)
       element.append(i)
       sequence.append(element)
+  #horizontal line
   if y_start == y_ending:
     for i in range(x_start, x_ending + 1):
       element = []
@@ -92,4 +109,4 @@ def string_to_list(elem):
   return list(map(int, elem.split(",")))
 
 
-get_vent()
+print(get_vent())
